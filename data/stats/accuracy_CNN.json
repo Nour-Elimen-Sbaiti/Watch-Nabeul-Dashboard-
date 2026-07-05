@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "properties": {
+        "year": 2020,
+        "classifier": "CNN",
+        "overall_accuracy_percent": 98.46,
+        "kappa": 0.9715,
+        "quality": "Excellent"
+      }
+    },
+    {
+      "properties": {
+        "year": 2025,
+        "classifier": "CNN",
+        "overall_accuracy_percent": 80.89,
+        "kappa": 0.62,
+        "quality": "Good"
+      }
+    }
+  ]
+}

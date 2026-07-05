@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "properties": {
+        "year": 2020,
+        "classifier": "Random Forest",
+        "overall_accuracy_percent": 92.38,
+        "kappa": 0.8796,
+        "quality": "Excellent"
+      }
+    },
+    {
+      "properties": {
+        "year": 2025,
+        "classifier": "Random Forest",
+        "overall_accuracy_percent": 76.88,
+        "kappa": 0.5148,
+        "quality": "Good"
+      }
+    }
+  ]
+}

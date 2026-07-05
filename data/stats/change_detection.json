@@ -1,0 +1,64 @@
+{
+  "units": {
+    "area_primary": "km2",
+    "area_secondary": "ha"
+  },
+  "classes": [
+    {
+      "class_id": 0,
+      "class_name": "Water",
+      "area_2020_ha": 5592.097492,
+      "area_2020_km2": 55.921,
+      "area_2025_ha": 1656.83278,
+      "area_2025_km2": 16.5683,
+      "change_ha": -3935.264712,
+      "change_km2": -39.3526,
+      "change_percent_of_2020": -70.3719,
+      "percent_2020_total": 1.9559,
+      "percent_2025_total": 0.5795,
+      "percentage_point_change": -1.3764
+    },
+    {
+      "class_id": 1,
+      "class_name": "Built_up",
+      "area_2020_ha": 7171.592487,
+      "area_2020_km2": 71.7159,
+      "area_2025_ha": 12862.58335,
+      "area_2025_km2": 128.6258,
+      "change_ha": 5690.990866,
+      "change_km2": 56.9099,
+      "change_percent_of_2020": 79.3546,
+      "percent_2020_total": 2.5084,
+      "percent_2025_total": 4.4988,
+      "percentage_point_change": 1.9905
+    },
+    {
+      "class_id": 2,
+      "class_name": "Forest",
+      "area_2020_ha": 80019.84301,
+      "area_2020_km2": 800.1984,
+      "area_2025_ha": 86773.30237,
+      "area_2025_km2": 867.733,
+      "change_ha": 6753.459364,
+      "change_km2": 67.5346,
+      "change_percent_of_2020": 8.4397,
+      "percent_2020_total": 27.9879,
+      "percent_2025_total": 30.35,
+      "percentage_point_change": 2.3621
+    },
+    {
+      "class_id": 3,
+      "class_name": "Agricultural_area",
+      "area_2020_ha": 193124.8925,
+      "area_2020_km2": 1931.2489,
+      "area_2025_ha": 184615.7069,
+      "area_2025_km2": 1846.1571,
+      "change_ha": -8509.185518,
+      "change_km2": -85.0919,
+      "change_percent_of_2020": -4.4061,
+      "percent_2020_total": 67.5478,
+      "percent_2025_total": 64.5716,
+      "percentage_point_change": -2.9762
+    }
+  ]
+}

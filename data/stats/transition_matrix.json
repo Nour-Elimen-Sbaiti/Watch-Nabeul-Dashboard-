@@ -1,0 +1,212 @@
+{
+  "units": {
+    "area_primary": "km2",
+    "area_secondary": "ha"
+  },
+  "total_area_ha": 285908.425398,
+  "total_area_km2": 2859.084254,
+  "classes": [
+    "Water",
+    "Built_up",
+    "Forest",
+    "Agricultural_area"
+  ],
+  "matrix_ha": [
+    [
+      828.7295929,
+      60.85949484,
+      2550.712454,
+      2151.79595
+    ],
+    [
+      637.7279018,
+      5425.759104,
+      442.6301515,
+      665.4753297
+    ],
+    [
+      65.7986929,
+      266.9019913,
+      46011.30242,
+      33675.83991
+    ],
+    [
+      124.5765922,
+      7109.062763,
+      37768.65735,
+      148122.5957
+    ]
+  ],
+  "matrix_km2": [
+    [
+      8.2873,
+      0.6086,
+      25.5071,
+      21.518
+    ],
+    [
+      6.3773,
+      54.2576,
+      4.4263,
+      6.6548
+    ],
+    [
+      0.658,
+      2.669,
+      460.113,
+      336.7584
+    ],
+    [
+      1.2458,
+      71.0906,
+      377.6866,
+      1481.226
+    ]
+  ],
+  "transitions": [
+    {
+      "from_class": "Water",
+      "to_class": "Water",
+      "area_ha": 828.729593,
+      "area_km2": 8.2873,
+      "percent_of_total_area": 0.2899,
+      "percent_of_source_class": 14.8197,
+      "is_stable": true
+    },
+    {
+      "from_class": "Water",
+      "to_class": "Built_up",
+      "area_ha": 60.859495,
+      "area_km2": 0.6086,
+      "percent_of_total_area": 0.0213,
+      "percent_of_source_class": 1.0883,
+      "is_stable": false
+    },
+    {
+      "from_class": "Water",
+      "to_class": "Forest",
+      "area_ha": 2550.712454,
+      "area_km2": 25.5071,
+      "percent_of_total_area": 0.8921,
+      "percent_of_source_class": 45.6128,
+      "is_stable": false
+    },
+    {
+      "from_class": "Water",
+      "to_class": "Agricultural_area",
+      "area_ha": 2151.79595,
+      "area_km2": 21.518,
+      "percent_of_total_area": 0.7526,
+      "percent_of_source_class": 38.4792,
+      "is_stable": false
+    },
+    {
+      "from_class": "Built_up",
+      "to_class": "Water",
+      "area_ha": 637.727902,
+      "area_km2": 6.3773,
+      "percent_of_total_area": 0.2231,
+      "percent_of_source_class": 8.8924,
+      "is_stable": false
+    },
+    {
+      "from_class": "Built_up",
+      "to_class": "Built_up",
+      "area_ha": 5425.759104,
+      "area_km2": 54.2576,
+      "percent_of_total_area": 1.8977,
+      "percent_of_source_class": 75.6563,
+      "is_stable": true
+    },
+    {
+      "from_class": "Built_up",
+      "to_class": "Forest",
+      "area_ha": 442.630152,
+      "area_km2": 4.4263,
+      "percent_of_total_area": 0.1548,
+      "percent_of_source_class": 6.172,
+      "is_stable": false
+    },
+    {
+      "from_class": "Built_up",
+      "to_class": "Agricultural_area",
+      "area_ha": 665.47533,
+      "area_km2": 6.6548,
+      "percent_of_total_area": 0.2328,
+      "percent_of_source_class": 9.2793,
+      "is_stable": false
+    },
+    {
+      "from_class": "Forest",
+      "to_class": "Water",
+      "area_ha": 65.798693,
+      "area_km2": 0.658,
+      "percent_of_total_area": 0.023,
+      "percent_of_source_class": 0.0822,
+      "is_stable": false
+    },
+    {
+      "from_class": "Forest",
+      "to_class": "Built_up",
+      "area_ha": 266.901991,
+      "area_km2": 2.669,
+      "percent_of_total_area": 0.0934,
+      "percent_of_source_class": 0.3335,
+      "is_stable": false
+    },
+    {
+      "from_class": "Forest",
+      "to_class": "Forest",
+      "area_ha": 46011.30242,
+      "area_km2": 460.113,
+      "percent_of_total_area": 16.093,
+      "percent_of_source_class": 57.4999,
+      "is_stable": true
+    },
+    {
+      "from_class": "Forest",
+      "to_class": "Agricultural_area",
+      "area_ha": 33675.83991,
+      "area_km2": 336.7584,
+      "percent_of_total_area": 11.7785,
+      "percent_of_source_class": 42.0844,
+      "is_stable": false
+    },
+    {
+      "from_class": "Agricultural_area",
+      "to_class": "Water",
+      "area_ha": 124.576592,
+      "area_km2": 1.2458,
+      "percent_of_total_area": 0.0436,
+      "percent_of_source_class": 0.0645,
+      "is_stable": false
+    },
+    {
+      "from_class": "Agricultural_area",
+      "to_class": "Built_up",
+      "area_ha": 7109.062763,
+      "area_km2": 71.0906,
+      "percent_of_total_area": 2.4865,
+      "percent_of_source_class": 3.6811,
+      "is_stable": false
+    },
+    {
+      "from_class": "Agricultural_area",
+      "to_class": "Forest",
+      "area_ha": 37768.65735,
+      "area_km2": 377.6866,
+      "percent_of_total_area": 13.2101,
+      "percent_of_source_class": 19.5566,
+      "is_stable": false
+    },
+    {
+      "from_class": "Agricultural_area",
+      "to_class": "Agricultural_area",
+      "area_ha": 148122.5957,
+      "area_km2": 1481.226,
+      "percent_of_total_area": 51.8077,
+      "percent_of_source_class": 76.6978,
+      "is_stable": true
+    }
+  ]
+}

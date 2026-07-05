@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "properties": {
+        "year": 2020,
+        "classifier": "SVM",
+        "overall_accuracy_percent": 92.19,
+        "kappa": 0.8775,
+        "quality": "Excellent"
+      }
+    },
+    {
+      "properties": {
+        "year": 2025,
+        "classifier": "SVM",
+        "overall_accuracy_percent": 77.05,
+        "kappa": 0.5108,
+        "quality": "Good"
+      }
+    }
+  ]
+}

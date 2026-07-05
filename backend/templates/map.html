@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Watch Nabeul — Backend Template</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef1f4;
+      color: #222;
+    }
+
+    /* ── Page header ── */
+    .page-header {
+      background: #1c1917;
+      color: #fff;
+      padding: 18px 28px;
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+    .page-header h1 {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+    .page-header span.subtitle {
+      font-size: 12px;
+      color: #a8a29e;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Page frame ── */
+    .page-content {
+      max-width: 1200px;
+      margin: 24px auto;
+      padding: 0 20px 40px;
+    }
+
+    #map {
+      height: 65vh;
+      width: 100%;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+      border: 1px solid #d6d3d1;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #stats {
+      margin-top: 24px;
+      padding: 24px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    #stats h2 { margin-bottom: 10px; color: #333; }
+    table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+    th { background: #333; color: white; padding: 8px 12px; text-align: left; }
+    td { padding: 8px 12px; border-bottom: 1px solid #ddd; }
+    tr:nth-child(even) { background: #eee; }
+    .positive { color: green; font-weight: bold; }
+    .negative { color: red; font-weight: bold; }
+
+    /* ── Opacity control ── */
+    .opacity-control {
+      background: #fff;
+      padding: 8px 12px;
+      border-radius: 6px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      font-size: 12px;
+      min-width: 160px;
+    }
+    .opacity-control label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 4px;
+      color: #333;
+    }
+    .opacity-control input[type="range"] {
+      width: 100%;
+    }
+    .opacity-control .opacity-value {
+      float: right;
+      font-weight: normal;
+      color: #666;
+    }
+
+    /* ── Legend ── */
+    .map-legend {
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 6px;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.4);
+      font-size: 12px;
+      line-height: 1.6;
+      max-width: 190px;
+    }
+    .map-legend h4 {
+      margin: 0 0 6px 0;
+      font-size: 13px;
+      color: #222;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 4px;
+    }
+    .map-legend .legend-section {
+      margin-bottom: 8px;
+    }
+    .map-legend .legend-section:last-child {
+      margin-bottom: 0;
+    }
+    .map-legend .legend-section-title {
+      font-weight: bold;
+      color: #555;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 3px;
+    }
+    .map-legend .legend-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2px;
+    }
+    .map-legend .swatch {
+      width: 12px;
+      height: 12px;
+      flex-shrink: 0;
+      border-radius: 2px;
+      display: inline-block;
+    }
+    .map-legend .swatch.line {
+      height: 3px;
+      border-radius: 0;
+    }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <h1>Watch Nabeul</h1>
+    <span class="subtitle">Backend Template</span>
+  </header>
+
+  <div class="page-content">
+    <div id="map"></div>
+    <div id="stats">
+      <h2>Loading stats...</h2>
+    </div>
+  </div>
+
+  <script>
+    // ── MAP ──
+    const map = L.map('map').setView([36.75, 10.73], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    const rasterOverlays = {};
+    const vectorOverlays = {};
+    const styles = {
+      'Nabeul Boundary': { color: '#FF0000', weight: 2, fillOpacity: 0 },
+      'Nabeul Hydrology': { color: '#0000FF', weight: 1.5, fillOpacity: 0.3, fillColor: '#4444FF' }
+    };
+
+    // Current opacity applied to all raster (LULC/NDVI) layers
+    let currentRasterOpacity = 0.85;
+
+    fetch('http://127.0.0.1:8000/api/rasters/')
+      .then(res => res.json())
+      .then(layers => {
+        layers.forEach(layer => {
+          rasterOverlays[layer.name] = L.tileLayer(layer.tile_url, {
+            opacity: currentRasterOpacity,
+            attribution: layer.name
+          });
+        });
+        addControls();
+      });
+
+    fetch('http://127.0.0.1:8000/api/vectors/')
+      .then(res => res.json())
+      .then(layers => {
+        const promises = layers.map(layer =>
+          fetch(`http://127.0.0.1:8000/geojson/${layer.id}/`)
+            .then(res => res.json())
+            .then(geojson => {
+              const style = styles[layer.name] || { color: '#FF6600', weight: 2 };
+              vectorOverlays[layer.name] = L.geoJSON(geojson, { style });
+            })
+        );
+        Promise.all(promises).then(() => addControls());
+      });
+
+    let controlAdded = false;
+    function addControls() {
+      if (controlAdded) return;
+      if (Object.keys(rasterOverlays).length > 0 && Object.keys(vectorOverlays).length > 0) {
+        controlAdded = true;
+        if (vectorOverlays['Nabeul Boundary']) {
+          vectorOverlays['Nabeul Boundary'].addTo(map);
+        }
+        if (vectorOverlays['Nabeul Hydrology']) {
+          vectorOverlays['Nabeul Hydrology'].addTo(map);
+        }
+        L.control.layers(null, { ...rasterOverlays, ...vectorOverlays }, { position: 'topleft' }).addTo(map);
+
+        addOpacityControl();
+        addLegend();
+      }
+    }
+
+    // ── Opacity control ──
+    // Lets the user fade raster layers (LULC/NDVI tiles) in and out without
+    // removing them, useful for comparing against the basemap or vectors below.
+    function addOpacityControl() {
+      const OpacityControl = L.Control.extend({
+        options: { position: 'topright' },
+        onAdd: function () {
+          const container = L.DomUtil.create('div', 'opacity-control');
+          container.innerHTML = `
+            <label>
+              Raster opacity
+              <span class="opacity-value" id="opacity-value">${Math.round(currentRasterOpacity * 100)}%</span>
+            </label>
+            <input type="range" id="opacity-slider" min="0" max="100" value="${currentRasterOpacity * 100}" />
+          `;
+          L.DomEvent.disableClickPropagation(container);
+          L.DomEvent.disableScrollPropagation(container);
+          return container;
+        }
+      });
+
+      map.addControl(new OpacityControl());
+
+      // Wire up the slider once it's in the DOM
+      const slider = document.getElementById('opacity-slider');
+      const valueLabel = document.getElementById('opacity-value');
+      slider.addEventListener('input', (e) => {
+        currentRasterOpacity = Number(e.target.value) / 100;
+        valueLabel.textContent = `${e.target.value}%`;
+        Object.values(rasterOverlays).forEach(layer => {
+          if (map.hasLayer(layer)) {
+            layer.setOpacity(currentRasterOpacity);
+          }
+        });
+      });
+    }
+
+    // ── Legend ──
+    // Static legend explaining vector overlay colors and the LULC class
+    // colors used across the rest of the dashboard, so this standalone
+    // map view stays readable on its own.
+    function addLegend() {
+      const LegendControl = L.Control.extend({
+        options: { position: 'bottomright' },
+        onAdd: function () {
+          const container = L.DomUtil.create('div', 'map-legend');
+          container.innerHTML = `
+            <h4>Legend</h4>
+
+            <div class="legend-section">
+              <div class="legend-section-title">Vectors</div>
+              <div class="legend-row">
+                <span class="swatch line" style="background:#FF0000"></span>
+                Nabeul Boundary
+              </div>
+              <div class="legend-row">
+                <span class="swatch" style="background:#4444FF"></span>
+                Nabeul Hydrology
+              </div>
+            </div>
+
+            <div class="legend-section">
+              <div class="legend-section-title">LULC Classes</div>
+              <div class="legend-row">
+                <span class="swatch" style="background:#dc2626"></span>
+                Built-up
+              </div>
+              <div class="legend-row">
+                <span class="swatch" style="background:#65a30d"></span>
+                Agricultural area
+              </div>
+              <div class="legend-row">
+                <span class="swatch" style="background:#16a34a"></span>
+                Forest / Vegetation
+              </div>
+              <div class="legend-row">
+                <span class="swatch" style="background:#0891b2"></span>
+                Water
+              </div>
+            </div>
+          `;
+          L.DomEvent.disableClickPropagation(container);
+          return container;
+        }
+      });
+
+      map.addControl(new LegendControl());
+    }
+
+    // ── STATS ──
+    fetch('http://127.0.0.1:8000/api/stats/')
+      .then(res => res.json())
+      .then(results => {
+        const statsDiv = document.getElementById('stats');
+        statsDiv.innerHTML = '';
+
+        results.forEach(result => {
+          const section = document.createElement('div');
+          section.style.marginBottom = '30px';
+
+          const title = document.createElement('h2');
+          title.textContent = result.name;
+          title.style.marginBottom = '10px';
+          section.appendChild(title);
+
+          // Change Detection table
+          if (result.result_type === 'change_detection') {
+            const table = document.createElement('table');
+            table.innerHTML = `
+              <tr>
+                <th>Class</th>
+                <th>Area 2020 (km²)</th>
+                <th>Area 2025 (km²)</th>
+                <th>Change (km²)</th>
+                <th>Change %</th>
+              </tr>
+              ${result.data.classes.map(c => `
+                <tr>
+                  <td>${c.class_name}</td>
+                  <td>${c.area_2020_km2}</td>
+                  <td>${c.area_2025_km2}</td>
+                  <td class="${c.change_km2 >= 0 ? 'positive' : 'negative'}">${c.change_km2}</td>
+                  <td class="${c.change_percent_of_2020 >= 0 ? 'positive' : 'negative'}">${c.change_percent_of_2020}%</td>
+                </tr>
+              `).join('')}
+            `;
+            section.appendChild(table);
+          }
+
+          // Overview Statistics table
+          if (result.result_type === 'overview_statistics') {
+            ['2020', '2025'].forEach(year => {
+              const yearTitle = document.createElement('h3');
+              yearTitle.textContent = `Year ${year}`;
+              yearTitle.style.margin = '10px 0';
+              section.appendChild(yearTitle);
+
+              const table = document.createElement('table');
+              table.innerHTML = `
+                <tr>
+                  <th>Class</th>
+                  <th>Area (km²)</th>
+                  <th>Area (ha)</th>
+                  <th>Percentage</th>
+                </tr>
+                ${result.data.years[year].classes.map(c => `
+                  <tr>
+                    <td>${c.class_name}</td>
+                    <td>${c.area_km2}</td>
+                    <td>${c.area_ha.toFixed(2)}</td>
+                    <td>${c.percentage}%</td>
+                  </tr>
+                `).join('')}
+              `;
+              section.appendChild(table);
+            });
+          }
+
+          // Transition Matrix table
+          if (result.result_type === 'transition_matrix') {
+            const classes = result.data.classes;
+            const matrix = result.data.matrix_km2;
+            const table = document.createElement('table');
+            table.innerHTML = `
+              <tr>
+                <th>From \\ To</th>
+                ${classes.map(c => `<th>${c}</th>`).join('')}
+              </tr>
+              ${matrix.map((row, i) => `
+                <tr>
+                  <th>${classes[i]}</th>
+                  ${row.map((val, j) => `
+                    <td style="${i === j ? 'background:#c8e6c9;font-weight:bold' : ''}">${val}</td>
+                  `).join('')}
+                </tr>
+              `).join('')}
+            `;
+            section.appendChild(table);
+          }
+
+          statsDiv.appendChild(section);
+        });
+      })
+      .catch(err => {
+        document.getElementById('stats').innerHTML = `<p style="color:red">Error loading stats: ${err.message}</p>`;
+      });
+  </script>
+</body>
+</html>
