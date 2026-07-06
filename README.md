@@ -6,12 +6,12 @@ The classification is based on Sentinel-2 imagery, and we ran it through three d
 
 - **SVM** (Support Vector Machine), on Google Earth Engine
 - **RF**, also on Google Earth Engine
-- **A CNN**, which we built and trained from scratch in PyTorch
+- **CNN**, which we built and trained from scratch in PyTorch
 
 ## Academic context
 
 This started as an end-of-year project for 1st year Engineering in Geospatial Informatics at MSE (Manouba School of Engineering) affliated to the UMA (Unoversity of Manouba)
-
+ for the Academic year: 2025–2026
 ## What's actually in it
 
 The centerpiece is an interactive Leaflet map with LULC classification, NDVI, boundary, and hydrology layers. You can toggle between Streets and Satellite basemaps, turn layers on/off manually, and adjust opacity per layer. Click anywhere on the map and it pulls back the actual pixel-level classification or NDVI value from the backend. There's also a Compare Mode — a draggable split slider so you can literally drag across the map between 2020 and 2025.
@@ -253,4 +253,5 @@ Developing predictive land-use models to forecast future LULC changes based on h
 - **Nour Elimen Sbaiti**
 - **Zayneb Ben Rajab**
 
-Supervised by **Mr. Louay Rabah** — MSE, Manouba School of Engineering
+Supervised by **Mr. Louay Rabah** — MSE, Manouba School of Engineering 
+**Academic Year:**  2025–2026
