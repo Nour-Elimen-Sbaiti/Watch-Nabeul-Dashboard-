@@ -243,9 +243,13 @@ This dashboard reflects only the data generated and processed for the scope of t
 Possible future improvements include:
 
 Integrating annual or seasonal imagery instead of only two time points to enable more detailed trend analysis.
+
 Expanding the study area beyond Nabeul Governorate to cover additional regions or the whole of Tunisia.
+
 Improving classification accuracy through larger datasets and more extensive ground-truth validation.
+
 Evaluating additional machine learning and deep learning approaches, such as U-Net and Vision Transformers (ViTs), alongside SVM, Random Forest, and CNN.
+
 Developing predictive land-use models to forecast future LULC changes based on historical trends.
 
 ## Authors & acknowledgments
