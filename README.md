@@ -10,7 +10,7 @@ The classification is based on Sentinel-2 imagery, and we ran it through three d
 
 ## Academic context
 
-This started as an end-of-year project for 1st year Engineering in Geospatial Informatics at MSE (Manouba School of Engineering) affliated to the UMA (Unoversity of Manouba)
+This started as an end-of-year project for 1st year Engineering in Geospatial Informatics at MSE (Manouba School of Engineering) affliated to the UMA (University of Manouba)
  for the Academic year: 2025–2026
 ## What's actually in it
 
